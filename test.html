@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <style>
+      #radicals {
+        font-size: 50px;
+      }
+
+      .scrollable-table {
+        height: 100%;
+        overflow: auto;
+      }
+    </style>
+    <script>
+      SCROLL_AMOUNT = 200;
+      BASE_URL = "http://www.mdbg.net/chindict/chindict.php?"
+      scrolled = 0;
+      $(document).ready(function(){
+        $.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+              {},
+              function(data, status){
+                $(data).find("a.rad").each(function(i, block){
+                  var regexp = /(cdqrad|cdqrads)=(.+)/
+                  var matches = regexp.exec(block.href)
+                  $("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
+                })
+
+                $(".qrad").on("click", function(e){
+                  window.location = (BASE_URL + "cdqrad=" + $(e.target).data("qrad"))
+                })
+              }
+        );
+
+        function scrollTo(scrollLevel){
+          console.log(scrollLevel);
+          $(".scrollable-table").animate({
+            scrollTop: scrollLevel
+          });
+        }
+
+        function isHover(id){
+          return $("#" + id + ":hover").length > 0;
+        }
+
+        function checkMouse(){
+          if(isHover("up")){
+            scrolled = scrolled - SCROLL_AMOUNT;
+            scrollTo(scrolled);
+          } else if(isHover("down")){
+            scrolled = scrolled + SCROLL_AMOUNT;
+            scrollTo(scrolled);
+          }
+          setTimeout(checkMouse, 500);
+        }
+
+        checkMouse();
+      });
+    </script>
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <h1 id="up" >Up</h1>
+      </div>
+      <div class="col-md-4">
+        <div class="scrollable-table">
+          <table id="radicals" class="table text-center table-hover">
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4 text-center">
+        <h1 id="down">Down</h1>
+      </div>
+    </div>
+  </body>
+</html>
