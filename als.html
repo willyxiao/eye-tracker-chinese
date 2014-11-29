@@ -10,10 +10,17 @@
         font-size: 50px;
       }
 
+      .scroll-btn {
+        height: 200px;
+        background-color: red;
+      }
+
       .scrollable-table {
         height: 80%;
         overflow: auto;
       }
+
+
     </style>
     <script>
       var alsTrackerApp = angular.module("alsTrackerApp", []);
@@ -42,7 +49,7 @@
         $scope.state = "radical";
         $scope.stream = [];
 
-        $scope.getWords = function(link) {
+        function getWords(link) {
 
           return [
             { text: "d"}, {text: "e"}, {text: "f"}
@@ -69,53 +76,51 @@
           });
         }
 
+        function isHover(id){
+          return $("#" + id + ":hover").length > 0;
+        }
+
         scroll = 0
-        $scope.scrollMouseOver = function(direction) {
+        function scrollMouseOver() {
           SCROLL_AMOUNT = 200
           // moves mouse up
-          if (direction == "up") {
-            scroll = scroll - SCROLL_AMOUNT;
+          if (isHover("up")) {
+            scroll = Math.max(scroll - SCROLL_AMOUNT, 0);
             scrollTo(scroll);
           }
           // moves mouse down
-          if (direction == "down") {
+          if (isHover("down")) {
             scroll = scroll + SCROLL_AMOUNT;
             scrollTo(scroll);
           }
-          //setTimeout($scope.scrollMouseOver(direction), 500);
+          setTimeout(scrollMouseOver, 500);
         }
-
+        scrollMouseOver();
       })
     </script>
     <div ng-controller="alsCtrl">
-        <div class="row">
-          <div class="col-md-4 text-center">
-            <button id="up" ng-mouseover="scrollMouseOver('up')">
-              Up
-            </button>
+      <div class="row">
+        <div class="col-md-4 text-center scroll-btn" id="up">
+          Up
+        </div>
+        <div class="col-md-4">
+          <div class="scrollable-table">
+            <table id="radicals" class="table text-center table-hover">
+              <tbody>
+                <tr class='qrad' ng-repeat="choice in list">
+                  <td ng-click="processClick(choice)">{{ choice.text }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="col-md-4">
-            <div class="scrollable-table">
-              <table id="radicals" class="table text-center table-hover">
-                <tbody>
-                  <tr class='qrad' ng-repeat="choice in list">
-                    <td ng-click="processClick(choice)">{{ choice.text }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="col-md-4 text-center">
-            <button id="down" ng-mouseover="scrollMouseOver('down')">
-              Down
-            </button>
-          </div>
+        </div>
+        <div class="col-md-4 text-center scroll-btn" id="down">
+          Down
         </div>
       </div>
       <div class="row">
         <div class="col-md-12 text-center">
         <p>{{ stream }}</p>
-        </div>
       </div>
     </div>
   </body>
