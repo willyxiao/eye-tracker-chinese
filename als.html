@@ -21,7 +21,10 @@
       alsTrackerApp.controller("alsCtrl", function($scope){
         function getRadicals() {
           return [
-            { text: "a", link: 1}, { text:"b", link: 2}, {text:"c", link: 3}
+            { text: "a", link: 1}, { text:"b", link: 2}, {text:"c", link: 3}, 
+            { text: "d", link: 1}, { text:"e", link: 2}, {text:"f", link: 3}, 
+            { text: "g", link: 1}, { text:"h", link: 2}, {text:"i", link: 3}, 
+            { text: "j", link: 1}, { text:"k", link: 2}, {text:"l", link: 3}
           ];
         }
         var radicals = getRadicals();
@@ -48,12 +51,37 @@
             $scope.list = radicals;
           }
         }
+
+        function scrollTo(scrollLevel){
+          console.log(scrollLevel);
+          $(".scrollable-table").animate({
+            scrollTop: scrollLevel
+          });
+        }
+
+        scroll = 0
+        $scope.scrollMouseOver = function(direction) {
+          SCROLL_AMOUNT = 200
+          // moves mouse up
+          if (direction == "up") {
+            scroll = scroll - SCROLL_AMOUNT;
+            scrollTo(scroll);
+          }
+          // moves mouse down
+          if (direction == "down") {
+            scroll = scroll + SCROLL_AMOUNT;
+            scrollTo(scroll);
+          }
+          //setTimeout($scope.scrollMouseOver(direction), 500);
+        }
+
       })
     </script>
     <div ng-controller="alsCtrl">
-      <div class="row">
         <div class="col-md-4 text-center">
-          <h1 id="up" >Up</h1>
+          <button id="up" ng-mouseover="scrollMouseOver('up')">
+            Up
+          </button>
         </div>
         <div class="col-md-4">
           <div class="scrollable-table">
@@ -67,9 +95,12 @@
           </div>
         </div>
         <div class="col-md-4 text-center">
-          <h1 id="down">Down</h1>
+          <button id="down" ng-mouseover="scrollMouseOver('down')">
+            Down
+          </button>
         </div>
       </div>
+    </div>
   </body>
 
 
