@@ -1,8 +1,27 @@
-<html>
+<html ng-app="alsTrackerApp">
   <head>
     <script src="angular.min.js"></script>
   </head>
   <body>
+    <script>
+      var alsTrackerApp = angular.module("alsTrackerApp", []);
+
+      alsTrackerApp.controller("alsCtrl", function($scope){
+        $scope.people = [
+          { name: "karen" },
+          { name: "hansen" },
+          { name: "willy" }
+        ]
+      })
+    </script>
+    <div ng-controller="alsCtrl">
+      <ul>
+        <li ng-repeat="person in people">
+          {{ person.name }}
+        </li>
+      </ul>
+    </div>
+
   </body>
 
 
