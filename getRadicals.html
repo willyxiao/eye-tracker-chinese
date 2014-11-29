@@ -1,0 +1,21 @@
+<html>
+	<script>
+		function getRadicals() {
+			var regexp = /(cdqrad|cdqrads)=([0-9]+)/			
+			var radicalArray = [];
+			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+				{},
+				function(data, status){
+					$(data).find("a.rad").each(function(i, block){
+					var matches = regexp.exec(block.href)
+					//$("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
+					radicalArray.push(var radical = {
+						text: block.text;
+						link: matches[matches.length - 1]
+					})
+                })
+			}
+			return radicalArray;
+		}
+	</script>
+</html>
