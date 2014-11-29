@@ -7,7 +7,12 @@
   <body>
     <style>
       #radicals {
+        font-size: 90px;
+      }
+      
+      #stream {
         font-size: 50px;
+        background-color: yellow;
       }
 
       .scroll-btn {
@@ -20,7 +25,6 @@
         height: 80%;
         overflow: auto;
       }
-
 
     </style>
     <script>
@@ -133,10 +137,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 text-center">
-          <p ng-repeat="word in stream track by $index">
-            <span>{{ word }}</span>
-          </p>
+        <div id="stream" class="col-md-12 text-center">
+          <span ng-repeat="word in stream track by $index">
+            {{ word }}
+          </span>
       </div>
     </div>
   </body>
