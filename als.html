@@ -60,12 +60,14 @@
           if ($scope.state == "radical") {
             // display words based on radicals
             $scope.list = getWords(choice.link);
+            $scope.state = "word"
           }
           else {
             // add to stream
-            $scope.stream.append(choice.text);
+            $scope.stream.push(choice.text);
             // display radical list
             $scope.list = radicals;
+            $scope.state = "radical"
           }
         }
 
