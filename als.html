@@ -10,10 +10,17 @@
         font-size: 50px;
       }
 
+      .scroll-btn {
+        height: 200px;
+        background-color: red;
+      }
+
       .scrollable-table {
         height: 100%;
         overflow: auto;
       }
+
+
     </style>
     <script>
       var alsTrackerApp = angular.module("alsTrackerApp", []);
@@ -42,7 +49,7 @@
         $scope.state = "radical";
         $scope.stream = [];
 
-        $scope.getWords = function(link) {
+        function getWords(link) {
 
           return [
             { text: "d"}, {text: "e"}, {text: "f"}
@@ -92,10 +99,8 @@
       })
     </script>
     <div ng-controller="alsCtrl">
-        <div class="col-md-4 text-center">
-          <button id="up">
-            Up
-          </button>
+        <div class="col-md-4 text-center scroll-btn" id="up">
+          Up
         </div>
         <div class="col-md-4">
           <div class="scrollable-table">
@@ -108,10 +113,8 @@
             </table>
           </div>
         </div>
-        <div class="col-md-4 text-center">
-          <button id="down">
-            Down
-          </button>
+        <div class="col-md-4 text-center scroll-btn" id="down">
+          Down
         </div>
       </div>
     </div>
