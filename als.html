@@ -20,12 +20,26 @@
 
       alsTrackerApp.controller("alsCtrl", function($scope){
         function getRadicals() {
-          return [
-            { text: "a", link: 1}, { text:"b", link: 2}, {text:"c", link: 3}
-          ];
-        }
-        var radicals = getRadicals();
-        $scope.list = radicals;
+          var regexp = /(cdqrad|cdqrads)=([0-9]+)/			
+			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+				{},
+				function(data, status){
+					var radicalArray = []
+					$(data).find("a.rad").each(function(i, block){
+						var matches = regexp.exec(block.href);
+						//$("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
+						radicalArray.push({
+							text: block.text,
+							link: matches[matches.length - 1]
+						});
+					})
+					$scope.list = radicalArray;
+				}
+			)
+		}
+        var radicals = [];
+		getRadicals();
+//        $scope.list = radicals;
         $scope.state = "radical";
         $scope.stream = [];
 
