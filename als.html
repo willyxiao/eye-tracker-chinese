@@ -24,7 +24,6 @@
     			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
     				{},
     				function(data, status){
-    					var radicalArray = []
     					$(data).find("a.rad").each(function(i, block){
     						var matches = regexp.exec(block.href);
     						radicals.push({
