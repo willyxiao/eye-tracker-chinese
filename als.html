@@ -2,28 +2,74 @@
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="angular.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   </head>
   <body>
+    <style>
+      #radicals {
+        font-size: 50px;
+      }
+
+      .scrollable-table {
+        height: 100%;
+        overflow: auto;
+      }
+    </style>
     <script>
       var alsTrackerApp = angular.module("alsTrackerApp", []);
 
       alsTrackerApp.controller("alsCtrl", function($scope){
-        $scope.people = [
-          { name: "karen" },
-          { name: "hansen" },
-          { name: "willy" }
-        ]
+        function getRadicals() {
+          return [
+            { text: "a", link: 1}, { text:"b", link: 2}, {text:"c", link: 3}
+          ];
+        }
+        var radicals = getRadicals();
+        $scope.list = radicals;
+        $scope.state = "radical";
+        $scope.stream = [];
+
+        $scope.getWords = function(link) {
+
+          return [
+            { text: "d"}, {text: "e"}, {text: "f"}
+          ];
+        }
+        
+        $scope.processClick = function(choice) {
+          if ($scope.state == "radical") {
+            // display words based on radicals
+            $scope.list = getWords(choice.link);
+          }
+          else {
+            // add to stream
+
+            // display radical list
+            $scope.list = radicals;
+          }
+        }
       })
     </script>
     <div ng-controller="alsCtrl">
-      <ul>
-        <li ng-repeat="person in people">
-          {{ person.name }}
-        </li>
-      </ul>
-    </div>
-
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <h1 id="up" >Up</h1>
+        </div>
+        <div class="col-md-4">
+          <div class="scrollable-table">
+            <table id="radicals" class="table text-center table-hover">
+              <tbody>
+                <tr class='qrad' ng-repeat="choice in list">
+                  <td ng-click="processClick(choice)">{{ choice.text }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <h1 id="down">Down</h1>
+        </div>
+      </div>
   </body>
 
 
