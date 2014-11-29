@@ -44,7 +44,7 @@
       alsTrackerApp.controller("alsCtrl", function($scope){
 
         function getRadicals(radicals) {
-          var regexp = /(cdqrad|cdqrads)=([0-9]+)/
+          var regexp = /(cdqrad|cdqrads)=([0-9]+)/;
     			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
     				{},
     				function(data, status){
@@ -54,11 +54,11 @@
     							text: block.text,
     							link: matches[matches.length - 1]
     						});
-    					})
+    					});
               $scope.list = radicals;
               $scope.$digest($scope);
     				}
-    			)
+    			);
 		    }
         var radicals = [];
     		getRadicals(radicals);
@@ -66,7 +66,7 @@
         $scope.stream = [];
 
         function getWords(link){
-    			var regexp = /cdqchi=([%0-9]+)/
+    			var regexp = /cdqchi=([%0-9]+)/;
     			var wordList = [];
           var url = "http://www.mdbg.net/chindict/chindict.php?cdqrad="+link;
     			$.get(url,
@@ -76,13 +76,13 @@
 							if(i >= 10){
 								wordList.push({
 									text: block.textContent,
-								})
+								});
 							}
-						})
+						});
     					$scope.list = wordList;
     					$scope.$digest($scope);
     				}
-    			)
+    			);
         }
 
         $scope.processClick = function(choice) {
@@ -97,7 +97,7 @@
           }
 
           scrollTo(scroll = 0);
-        }
+        };
 
         $scope.backClick = function() {
           if ($scope.state == "word") {
@@ -105,7 +105,7 @@
             $scope.state = "radical";
             scrollTo(scroll = 0);
           }
-        }
+        };
 
         function scrollTo(scrollLevel){
           console.log(scrollLevel);
@@ -118,9 +118,9 @@
           return $("#" + id + ":hover").length > 0;
         }
 
-        scroll = 0
+        scroll = 0;
         function scrollMouseOver() {
-          SCROLL_AMOUNT = 200
+          SCROLL_AMOUNT = 200;
           // moves mouse up
           if (isHover("up")) {
             scroll = Math.max(scroll - SCROLL_AMOUNT, 0);
@@ -134,7 +134,7 @@
           setTimeout(scrollMouseOver, 500);
         }
         scrollMouseOver();
-      })
+      });
     </script>
     <div ng-controller="alsCtrl">
       <div class="row">
