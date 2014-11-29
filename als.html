@@ -50,38 +50,37 @@
         $scope.state = "radical";
         $scope.stream = [];
 
-        $scope.getWords = function(link) {
-			var regexp = /cdqchi=([%0-9]+)/			
-			var wordList = [];
-			$.get("http://www.mdbg.net/chindict/chindict.php?chqrad="+link,
-				{},
-				function(data, status){
-					$(data).find("span.mpt3").each(function(i, block){
-						var matches = regexp.exec(block.href);
-						//$("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
-						wordList.push({
-							text: block.text
-						})
-					}
-					$scope.list = wordList;
-					$scope.$digest($scope);
-				})
-			)
+        function getWords(link){
+    			var regexp = /cdqchi=([%0-9]+)/;
+    			var wordList = [];
+          var url = "http://www.mdbg.net/chindict/chindict.php?cdqrad="+link;
+    			$.get(url,
+    				{},
+    				function(data, status){
+    					$(data).find("span.mpt3").each(function(i, block){
+    						wordList.push({
+    							text: block.textContent,
+    						})
+              })
+    					$scope.list = wordList;
+    					$scope.$digest($scope);
+    				}
+    			)
         }
 
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
             // display words based on radicals
-            $scope.list = getWords(choice.link);
+            getWords(choice.link);
             $scope.state = "word"
           }
           else {
-            // add to stream
             $scope.stream.push(choice.text);
-            // display radical list
             $scope.list = radicals;
             $scope.state = "radical"
           }
+
+          scrollTo(scroll = 0);
         }
 
         function scrollTo(scrollLevel){
