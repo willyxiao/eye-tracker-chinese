@@ -78,7 +78,7 @@
           SCROLL_AMOUNT = 200
           // moves mouse up
           if (isHover("up")) {
-            scroll = scroll - SCROLL_AMOUNT;
+            scroll = Math.max(scroll - SCROLL_AMOUNT, 0);
             scrollTo(scroll);
           }
           // moves mouse down
