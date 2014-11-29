@@ -19,16 +19,26 @@
       var alsTrackerApp = angular.module("alsTrackerApp", []);
 
       alsTrackerApp.controller("alsCtrl", function($scope){
-        function getRadicals() {
-          return [
-            { text: "a", link: 1}, { text:"b", link: 2}, {text:"c", link: 3}, 
-            { text: "d", link: 1}, { text:"e", link: 2}, {text:"f", link: 3}, 
-            { text: "g", link: 1}, { text:"h", link: 2}, {text:"i", link: 3}, 
-            { text: "j", link: 1}, { text:"k", link: 2}, {text:"l", link: 3}
-          ];
-        }
-        var radicals = getRadicals();
-        $scope.list = radicals;
+
+        function getRadicals(radicals) {
+          var regexp = /(cdqrad|cdqrads)=([0-9]+)/
+    			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+    				{},
+    				function(data, status){
+    					$(data).find("a.rad").each(function(i, block){
+    						var matches = regexp.exec(block.href);
+    						radicals.push({
+    							text: block.text,
+    							link: matches[matches.length - 1]
+    						});
+    					})
+              $scope.list = radicals;
+              $scope.$digest($scope);
+    				}
+    			)
+		    }
+        var radicals = [];
+    		getRadicals(radicals);
         $scope.state = "radical";
         $scope.stream = [];
 
@@ -38,7 +48,7 @@
             { text: "d"}, {text: "e"}, {text: "f"}
           ];
         }
-        
+
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
             // display words based on radicals
