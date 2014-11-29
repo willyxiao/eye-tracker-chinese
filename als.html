@@ -122,7 +122,9 @@
       </div>
       <div class="row">
         <div class="col-md-12 text-center">
-        <p>{{ stream }}</p>
+          <p ng-repeat="word in stream track by $index">
+            <span>{{ word }}</span>
+          </p>
       </div>
     </div>
   </body>
