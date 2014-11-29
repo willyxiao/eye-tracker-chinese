@@ -13,6 +13,7 @@
       .scroll-btn {
         height: 200px;
         background-color: red;
+        font-size: 50px;
       }
 
       .scrollable-table {
@@ -49,26 +50,37 @@
         $scope.state = "radical";
         $scope.stream = [];
 
-        function getWords(link) {
-
-          return [
-            { text: "d"}, {text: "e"}, {text: "f"}
-          ];
+        function getWords(link){
+    			var regexp = /cdqchi=([%0-9]+)/;
+    			var wordList = [];
+          var url = "http://www.mdbg.net/chindict/chindict.php?cdqrad="+link;
+    			$.get(url,
+    				{},
+    				function(data, status){
+    					$(data).find("span.mpt3").each(function(i, block){
+    						wordList.push({
+    							text: block.textContent,
+    						})
+              })
+    					$scope.list = wordList;
+    					$scope.$digest($scope);
+    				}
+    			)
         }
 
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
             // display words based on radicals
-            $scope.list = getWords(choice.link);
+            getWords(choice.link);
             $scope.state = "word"
           }
           else {
-            // add to stream
             $scope.stream.push(choice.text);
-            // display radical list
             $scope.list = radicals;
             $scope.state = "radical"
           }
+
+          scrollTo(scroll = 0);
         }
 
         function scrollTo(scrollLevel){
