@@ -69,27 +69,31 @@
           });
         }
 
+        function isHover(id){
+          return $("#" + id + ":hover").length > 0;
+        }
+
         scroll = 0
-        $scope.scrollMouseOver = function(direction) {
+        function scrollMouseOver() {
           SCROLL_AMOUNT = 200
           // moves mouse up
-          if (direction == "up") {
+          if (isHover("up")) {
             scroll = scroll - SCROLL_AMOUNT;
             scrollTo(scroll);
           }
           // moves mouse down
-          if (direction == "down") {
+          if (isHover("down")) {
             scroll = scroll + SCROLL_AMOUNT;
             scrollTo(scroll);
           }
-          //setTimeout($scope.scrollMouseOver(direction), 500);
+          setTimeout(scrollMouseOver, 500);
         }
-
+        scrollMouseOver();
       })
     </script>
     <div ng-controller="alsCtrl">
         <div class="col-md-4 text-center">
-          <button id="up" ng-mouseover="scrollMouseOver('up')">
+          <button id="up">
             Up
           </button>
         </div>
@@ -105,7 +109,7 @@
           </div>
         </div>
         <div class="col-md-4 text-center">
-          <button id="down" ng-mouseover="scrollMouseOver('down')">
+          <button id="down">
             Down
           </button>
         </div>
