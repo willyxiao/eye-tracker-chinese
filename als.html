@@ -66,17 +66,19 @@
         $scope.stream = [];
 
         function getWords(link){
-    			var regexp = /cdqchi=([%0-9]+)/;
+    			var regexp = /cdqchi=([%0-9]+)/
     			var wordList = [];
           var url = "http://www.mdbg.net/chindict/chindict.php?cdqrad="+link;
     			$.get(url,
     				{},
     				function(data, status){
-    					$(data).find("span.mpt3").each(function(i, block){
-    						wordList.push({
-    							text: block.textContent,
-    						})
-              })
+    					$(data).find('span[class^="mpt"]').each(function(i, block){
+							if(i >= 10){
+								wordList.push({
+									text: block.textContent,
+								})
+							}
+						})
     					$scope.list = wordList;
     					$scope.$digest($scope);
     				}
