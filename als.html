@@ -19,27 +19,26 @@
       var alsTrackerApp = angular.module("alsTrackerApp", []);
 
       alsTrackerApp.controller("alsCtrl", function($scope){
-        function getRadicals() {
-          var regexp = /(cdqrad|cdqrads)=([0-9]+)/			
-			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
-				{},
-				function(data, status){
-					var radicalArray = []
-					$(data).find("a.rad").each(function(i, block){
-						var matches = regexp.exec(block.href);
-						//$("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
-						radicalArray.push({
-							text: block.text,
-							link: matches[matches.length - 1]
-						});
-					})
-					$scope.list = radicalArray;
-				}
-			)
-		}
+        function getRadicals(radicals) {
+          var regexp = /(cdqrad|cdqrads)=([0-9]+)/
+    			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+    				{},
+    				function(data, status){
+    					var radicalArray = []
+    					$(data).find("a.rad").each(function(i, block){
+    						var matches = regexp.exec(block.href);
+    						radicals.push({
+    							text: block.text,
+    							link: matches[matches.length - 1]
+    						});
+    					})
+              $scope.list = radicals;
+              $scope.$digest($scope);
+    				}
+    			)
+		    }
         var radicals = [];
-		getRadicals();
-//        $scope.list = radicals;
+    		getRadicals(radicals);
         $scope.state = "radical";
         $scope.stream = [];
 
@@ -49,7 +48,7 @@
             { text: "d"}, {text: "e"}, {text: "f"}
           ];
         }
-        
+
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
             // display words based on radicals
