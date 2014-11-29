@@ -10,10 +10,17 @@
         font-size: 50px;
       }
 
+      .scroll-btn {
+        height: 200px;
+        background-color: red;
+      }
+
       .scrollable-table {
-        height: 100%;
+        height: 80%;
         overflow: auto;
       }
+
+
     </style>
     <script>
       var alsTrackerApp = angular.module("alsTrackerApp", []);
@@ -65,12 +72,14 @@
           if ($scope.state == "radical") {
             // display words based on radicals
             $scope.list = getWords(choice.link);
+            $scope.state = "word"
           }
           else {
             // add to stream
-
+            $scope.stream.push(choice.text);
             // display radical list
             $scope.list = radicals;
+            $scope.state = "radical"
           }
         }
 
@@ -104,10 +113,9 @@
       })
     </script>
     <div ng-controller="alsCtrl">
-        <div class="col-md-4 text-center">
-          <button id="up">
-            Up
-          </button>
+      <div class="row">
+        <div class="col-md-4 text-center scroll-btn" id="up">
+          Up
         </div>
         <div class="col-md-4">
           <div class="scrollable-table">
@@ -120,11 +128,13 @@
             </table>
           </div>
         </div>
-        <div class="col-md-4 text-center">
-          <button id="down">
-            Down
-          </button>
+        <div class="col-md-4 text-center scroll-btn" id="down">
+          Down
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+        <p>{{ stream }}</p>
       </div>
     </div>
   </body>
