@@ -43,10 +43,22 @@
         $scope.stream = [];
 
         $scope.getWords = function(link) {
-
-          return [
-            { text: "d"}, {text: "e"}, {text: "f"}
-          ];
+			var regexp = /cdqchi=([%0-9]+)/			
+			var wordList = [];
+			$.get("http://www.mdbg.net/chindict/chindict.php?chqrad="+link,
+				{},
+				function(data, status){
+					$(data).find("span.mpt3").each(function(i, block){
+						var matches = regexp.exec(block.href);
+						//$("#radicals").append("<tr><td class='qrad' data-qrad=" + matches[matches.length - 1] + ">" + block.text + "</td></tr>")
+						wordList.push({
+							text: block.text
+						})
+					}
+					$scope.list = wordList;
+					$scope.$digest($scope);
+				})
+			)
         }
 
         $scope.processClick = function(choice) {
