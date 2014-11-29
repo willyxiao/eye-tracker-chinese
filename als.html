@@ -10,9 +10,15 @@
         font-size: 90px;
       }
       
-      #stream {
+      .stream {
         font-size: 50px;
         background-color: yellow;
+      }
+
+      .back-btn {
+        height: 200px;
+        background-color: red;
+        font-size: 50px;
       }
 
       .scroll-btn {
@@ -74,17 +80,23 @@
 
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
-            // display words based on radicals
             getWords(choice.link);
-            $scope.state = "word"
+            $scope.state = "word";
           }
           else {
             $scope.stream.push(choice.text);
             $scope.list = radicals;
-            $scope.state = "radical"
+            $scope.state = "radical";
           }
 
           scrollTo(scroll = 0);
+        }
+
+        $scope.backClick = function() {
+          if ($scope.state == "word") {
+            $scope.list = radicals;
+            $scope.state = "radical";
+          }
         }
 
         function scrollTo(scrollLevel){
@@ -137,10 +149,14 @@
         </div>
       </div>
       <div class="row">
-        <div id="stream" class="col-md-12 text-center">
+        <div class="col-md-8 text-center stream">
           <span ng-repeat="word in stream track by $index">
             {{ word }}
           </span>
+        </div> 
+        <div ng-click="backClick()" class="col-md-4 text-center back-btn">
+          Back
+        </div>
       </div>
     </div>
   </body>
