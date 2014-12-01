@@ -2,7 +2,6 @@
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.min.js"></script>
-    <script src="chindict.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   </head>
   <body>
@@ -45,25 +44,54 @@
       alsTrackerApp.controller("alsCtrl", function($scope){
 
         function getRadicals(radicals) {
-          radicals = Object.keys(chindict);
-        }
-
-        var radicals = Object.keys(chindict)
-        $scope.list = radicals;
+          var regexp = /(cdqrad|cdqrads)=([0-9]+)/;
+    			$.get("http://www.mdbg.net/chindict/chindict.php?page=radicals",
+    				{},
+    				function(data, status){
+    					$(data).find("a.rad").each(function(i, block){
+    						var matches = regexp.exec(block.href);
+    						radicals.push({
+    							text: block.text,
+    							link: matches[matches.length - 1]
+    						});
+    					});
+              $scope.list = radicals;
+              $scope.$digest($scope);
+    				}
+    			);
+		    }
+        var radicals = [];
+    		getRadicals(radicals);
         $scope.state = "radical";
         $scope.stream = [];
 
-        function getWords(radical){
-    			$scope.list = chindict[radical]
+        function getWords(link){
+    			var regexp = /cdqchi=([%0-9]+)/;
+    			var wordList = [];
+          var url = "http://www.mdbg.net/chindict/chindict.php?cdqrad="+link;
+    			$.get(url,
+    				{},
+    				function(data, status){
+    					$(data).find('span[class^="mpt"]').each(function(i, block){
+							if(i >= 10){
+								wordList.push({
+									text: block.textContent,
+								});
+							}
+						});
+    					$scope.list = wordList;
+    					$scope.$digest($scope);
+    				}
+    			);
         }
 
         $scope.processClick = function(choice) {
           if ($scope.state == "radical") {
-            getWords(choice);
+            getWords(choice.link);
             $scope.state = "word";
           }
           else {
-            $scope.stream.push(choice);
+            $scope.stream.push(choice.text);
             $scope.list = radicals;
             $scope.state = "radical";
           }
@@ -115,7 +143,7 @@
             <table id="radicals" class="table text-center table-hover">
               <tbody>
                 <tr class='qrad' ng-repeat="choice in list">
-                  <td ng-click="processClick(choice)">{{ choice }}</td>
+                  <td ng-click="processClick(choice)">{{ choice.text }}</td>
                 </tr>
               </tbody>
             </table>
