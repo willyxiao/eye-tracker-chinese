@@ -44,11 +44,7 @@
 
       alsTrackerApp.controller("alsCtrl", function($scope){
 
-        function getRadicals(radicals) {
-          radicals = Object.keys(chindict);
-        }
-
-        var radicals = Object.keys(chindict)
+        // radicals list from chindict.js
         $scope.list = radicals;
         $scope.state = "radical";
         $scope.stream = [];
@@ -114,7 +110,7 @@
           <div class="scrollable-table">
             <table id="radicals" class="table text-center table-hover">
               <tbody>
-                <tr class='qrad' ng-repeat="choice in list">
+                <tr class='qrad' ng-repeat="choice in list track by $index">
                   <td ng-click="processClick(choice)">{{ choice }}</td>
                 </tr>
               </tbody>
